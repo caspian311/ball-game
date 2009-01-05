@@ -22,136 +22,135 @@ import net.todd.common.uitools.ListenerManager;
 import net.todd.games.balls.common.Ball;
 
 public class MainView implements IMainView {
-	private final JFrame mainFrame;
-	private BouncyBallComponent bouncyBallComponent;
-	private final ListenerManager colorChangedListenerManager;
-	private ColorPickerView colorPickerView;
+    private final JFrame mainFrame;
+    private BouncyBallComponent bouncyBallComponent;
+    private final ListenerManager colorChangedListenerManager;
+    private ColorPickerView colorPickerView;
 
-	public MainView() {
-		colorChangedListenerManager = new ListenerManager();
-		mainFrame = new JFrame();
-		Container c = mainFrame.getContentPane();
+    public MainView() {
+	colorChangedListenerManager = new ListenerManager();
+	mainFrame = new JFrame();
+	Container c = mainFrame.getContentPane();
 
-		JPanel mainPanel = createMainPanel();
-		mainFrame.setJMenuBar(createMenuBar());
-		
-		c.setLayout(new BorderLayout());
-		c.add(mainPanel, BorderLayout.CENTER);
+	JPanel mainPanel = createMainPanel();
+	mainFrame.setJMenuBar(createMenuBar());
 
-		mainFrame.pack();
-	}
+	c.setLayout(new BorderLayout());
+	c.add(mainPanel, BorderLayout.CENTER);
 
-	private JMenuBar createMenuBar() {
-		JMenuBar menuBar = new JMenuBar();
-		JMenu colorMenu = new JMenu("My Ball");
-		JMenuItem pickColorMenuItem = new JMenuItem("Pick color...");
-		pickColorMenuItem.addActionListener(new ActionListener() {
+	mainFrame.pack();
+    }
 
-			public void actionPerformed(ActionEvent e) {
-				colorPickerView = new ColorPickerView();
-				colorPickerView.addChangeListener(new IListener() {
-					public void fireEvent() {
-						colorChangedListenerManager.notifyListeners();
-					}
-				});
-			}
+    private JMenuBar createMenuBar() {
+	JMenuBar menuBar = new JMenuBar();
+	JMenu colorMenu = new JMenu("My Ball");
+	JMenuItem pickColorMenuItem = new JMenuItem("Pick color...");
+	pickColorMenuItem.addActionListener(new ActionListener() {
+
+	    public void actionPerformed(ActionEvent e) {
+		colorPickerView = new ColorPickerView();
+		colorPickerView.addChangeListener(new IListener() {
+		    public void fireEvent() {
+			colorChangedListenerManager.notifyListeners();
+		    }
 		});
-		colorMenu.add(pickColorMenuItem);
-		menuBar.add(colorMenu);
+	    }
+	});
+	colorMenu.add(pickColorMenuItem);
+	menuBar.add(colorMenu);
 
-		return menuBar;
-	}
-	
-	public void addColorChangeListener(IListener listener) {
-		colorChangedListenerManager.addListener(listener);
-	}
+	return menuBar;
+    }
 
-	private JPanel createMainPanel() {
-		JPanel mainPanel = new JPanel();
-		mainPanel.setBackground(Color.black);
-		mainPanel.setPreferredSize(new Dimension(300, 300));
+    public void addColorChangeListener(IListener listener) {
+	colorChangedListenerManager.addListener(listener);
+    }
 
-		bouncyBallComponent = new BouncyBallComponent();
-		bouncyBallComponent.setBackground(Color.white);
-		bouncyBallComponent.setPreferredSize(new Dimension(300, 300));
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(bouncyBallComponent, BorderLayout.CENTER);
+    private JPanel createMainPanel() {
+	JPanel mainPanel = new JPanel();
+	mainPanel.setBackground(Color.black);
+	mainPanel.setPreferredSize(new Dimension(300, 300));
 
-		return mainPanel;
-	}
+	bouncyBallComponent = new BouncyBallComponent();
+	bouncyBallComponent.setBackground(Color.white);
+	bouncyBallComponent.setPreferredSize(new Dimension(300, 300));
+	mainPanel.setLayout(new BorderLayout());
+	mainPanel.add(bouncyBallComponent, BorderLayout.CENTER);
 
-	public void showView() {
-		mainFrame.setVisible(true);
-	}
+	return mainPanel;
+    }
 
-	public void addClosingListener(final IListener listener) {
-		mainFrame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				listener.fireEvent();
-			}
-		});
-	}
+    public void showView() {
+	mainFrame.setVisible(true);
+    }
 
-	public void setBallPositions(Ball[] ballData) {
-		bouncyBallComponent.setBallPositions(ballData);
-		bouncyBallComponent.repaint();
-	}
+    public void addClosingListener(final IListener listener) {
+	mainFrame.addWindowListener(new WindowAdapter() {
+	    @Override
+	    public void windowClosing(WindowEvent e) {
+		listener.fireEvent();
+	    }
+	});
+    }
 
-	public void addUpKeyListener(final IListener listener) {
-		mainFrame.requestFocus();
+    public void setBallPositions(Ball[] ballData) {
+	bouncyBallComponent.setBallPositions(ballData);
+	bouncyBallComponent.repaint();
+    }
 
-		mainFrame.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (38 == e.getKeyCode()) {
-					listener.fireEvent();
-				}
-			}
-		});
-	}
-	
-	public void addDownKeyListener(final IListener listener) {
-		mainFrame.requestFocus();
+    public void addUpKeyListener(final IListener listener) {
+	mainFrame.requestFocus();
 
-		mainFrame.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (40 == e.getKeyCode()) {
-					listener.fireEvent();
-				}
-			}
-		});
-	}
+	mainFrame.addKeyListener(new KeyAdapter() {
+	    @Override
+	    public void keyPressed(KeyEvent e) {
+		if (38 == e.getKeyCode()) {
+		    listener.fireEvent();
+		}
+	    }
+	});
+    }
 
-	public void addLeftKeyListener(final IListener listener) {
-		mainFrame.requestFocus();
+    public void addDownKeyListener(final IListener listener) {
+	mainFrame.requestFocus();
 
-		mainFrame.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (37 == e.getKeyCode()) {
-					listener.fireEvent();
-				}
-			}
-		});
-	}
+	mainFrame.addKeyListener(new KeyAdapter() {
+	    @Override
+	    public void keyPressed(KeyEvent e) {
+		if (40 == e.getKeyCode()) {
+		    listener.fireEvent();
+		}
+	    }
+	});
+    }
 
-	public void addRightKeyListener(final IListener listener) {
-		mainFrame.requestFocus();
+    public void addLeftKeyListener(final IListener listener) {
+	mainFrame.requestFocus();
 
-		mainFrame.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (39 == e.getKeyCode()) {
-					listener.fireEvent();
-				}
-			}
-		});
-	}
+	mainFrame.addKeyListener(new KeyAdapter() {
+	    @Override
+	    public void keyPressed(KeyEvent e) {
+		if (37 == e.getKeyCode()) {
+		    listener.fireEvent();
+		}
+	    }
+	});
+    }
 
-	public String getSelectedColor() {
-		return colorPickerView != null ? colorPickerView.getSelectedColor()
-				: null;
-	}
+    public void addRightKeyListener(final IListener listener) {
+	mainFrame.requestFocus();
+
+	mainFrame.addKeyListener(new KeyAdapter() {
+	    @Override
+	    public void keyPressed(KeyEvent e) {
+		if (39 == e.getKeyCode()) {
+		    listener.fireEvent();
+		}
+	    }
+	});
+    }
+
+    public String getSelectedColor() {
+	return colorPickerView != null ? colorPickerView.getSelectedColor() : null;
+    }
 }

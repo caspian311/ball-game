@@ -19,74 +19,75 @@ import org.apache.mina.transport.socket.SocketConnector;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 
 public class BallClient implements INetworkClient {
-	private final ListenerManager listenerManager;
-	private Ball[] balls;
-	protected IoSession session;
-	private boolean isConnected;
+    private static final int PORT = 9898;
+    private final ListenerManager listenerManager;
+    private Ball[] balls;
+    protected IoSession session;
+    private boolean isConnected;
 
-	public BallClient() {
-		listenerManager = new ListenerManager();
-		SocketConnector connector = new NioSocketConnector();
+    public BallClient() {
+	listenerManager = new ListenerManager();
+	SocketConnector connector = new NioSocketConnector();
 
-		connector.getFilterChain().addLast("codec",
-				new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
-		connector.getFilterChain().addLast("logger", new LoggingFilter());
+	connector.getFilterChain().addLast("codec",
+	        new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
+	connector.getFilterChain().addLast("logger", new LoggingFilter());
 
-		connector.setHandler(new IoHandlerAdapter() {
-			@Override
-			public void sessionOpened(IoSession session) throws Exception {
-				BallClient.this.session = session;
-			}
+	connector.setHandler(new IoHandlerAdapter() {
+	    @Override
+	    public void sessionOpened(IoSession session) throws Exception {
+		BallClient.this.session = session;
+	    }
 
-			@Override
-			public void messageReceived(IoSession session, Object message)
-					throws Exception {
-				ServerResponse response = (ServerResponse) message;
-				balls = response.getBalls();
-				listenerManager.notifyListeners();
-			}
-		});
+	    @Override
+	    public void messageReceived(IoSession session, Object message)
+		    throws Exception {
+		ServerResponse response = (ServerResponse) message;
+		balls = response.getBalls();
+		listenerManager.notifyListeners();
+	    }
+	});
 
-		connector.addListener(new IoServiceListener() {
-			public void serviceActivated(IoService service) throws Exception {
-				isConnected = true;
-			}
+	connector.addListener(new IoServiceListener() {
+	    public void serviceActivated(IoService service) throws Exception {
+		isConnected = true;
+	    }
 
-			public void serviceDeactivated(IoService service) throws Exception {
-			}
+	    public void serviceDeactivated(IoService service) throws Exception {
+	    }
 
-			public void serviceIdle(IoService service, IdleStatus idleStatus)
-					throws Exception {
-			}
+	    public void serviceIdle(IoService service, IdleStatus idleStatus)
+		    throws Exception {
+	    }
 
-			public void sessionCreated(IoSession session) throws Exception {
-			}
+	    public void sessionCreated(IoSession session) throws Exception {
+	    }
 
-			public void sessionDestroyed(IoSession session) throws Exception {
-			}
-		});
-		connector.connect(new InetSocketAddress("localhost", 9898));
+	    public void sessionDestroyed(IoSession session) throws Exception {
+	    }
+	});
+	connector.connect(new InetSocketAddress("localhost", PORT));
+    }
+
+    public void addListener(IListener listener) {
+	listenerManager.addListener(listener);
+    }
+
+    public Ball[] getBalls() {
+	return balls;
+    }
+
+    public void update(Ball ball) {
+	session.write(ball);
+    }
+
+    public boolean isConnected() {
+	return isConnected;
+    }
+
+    public void closeConnection() {
+	if (session != null) {
+	    session.close();
 	}
-
-	public void addListener(IListener listener) {
-		listenerManager.addListener(listener);
-	}
-
-	public Ball[] getBalls() {
-		return balls;
-	}
-
-	public void update(Ball ball) {
-		session.write(ball);
-	}
-
-	public boolean isConnected() {
-		return isConnected;
-	}
-
-	public void closeConnection() {
-		if (session != null) {
-			session.close();
-		}
-	}
+    }
 }
