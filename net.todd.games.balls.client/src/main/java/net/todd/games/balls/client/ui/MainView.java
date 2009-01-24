@@ -1,9 +1,7 @@
 package net.todd.games.balls.client.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -19,17 +17,16 @@ import javax.swing.JPanel;
 
 import net.todd.common.uitools.IListener;
 import net.todd.common.uitools.ListenerManager;
-import net.todd.games.balls.common.Ball;
 
-public class MainView implements IMainView {
+public abstract class MainView {
     private final JFrame mainFrame;
-    private BouncyBallComponent bouncyBallComponent;
     private final ListenerManager colorChangedListenerManager;
     private ColorPickerView colorPickerView;
 
     public MainView() {
 	colorChangedListenerManager = new ListenerManager();
 	mainFrame = new JFrame();
+	mainFrame.setSize(500, 500);
 	Container c = mainFrame.getContentPane();
 
 	JPanel mainPanel = createMainPanel();
@@ -37,9 +34,9 @@ public class MainView implements IMainView {
 
 	c.setLayout(new BorderLayout());
 	c.add(mainPanel, BorderLayout.CENTER);
-
-	mainFrame.pack();
     }
+
+    public abstract JPanel createMainPanel();
 
     private JMenuBar createMenuBar() {
 	JMenuBar menuBar = new JMenuBar();
@@ -62,46 +59,10 @@ public class MainView implements IMainView {
 	return menuBar;
     }
 
-    public void addColorChangeListener(IListener listener) {
-	colorChangedListenerManager.addListener(listener);
-    }
-
-    private JPanel createMainPanel() {
-	JPanel mainPanel = new JPanel();
-	mainPanel.setBackground(Color.black);
-	mainPanel.setPreferredSize(new Dimension(300, 300));
-
-	bouncyBallComponent = new BouncyBallComponent();
-	bouncyBallComponent.setBackground(Color.white);
-	bouncyBallComponent.setPreferredSize(new Dimension(300, 300));
-	mainPanel.setLayout(new BorderLayout());
-	mainPanel.add(bouncyBallComponent, BorderLayout.CENTER);
-
-	return mainPanel;
-    }
-
-    public void showView() {
-	mainFrame.setVisible(true);
-    }
-
-    public void addClosingListener(final IListener listener) {
-	mainFrame.addWindowListener(new WindowAdapter() {
-	    @Override
-	    public void windowClosing(WindowEvent e) {
-		listener.fireEvent();
-	    }
-	});
-    }
-
-    public void setBallPositions(Ball[] ballData) {
-	bouncyBallComponent.setBallPositions(ballData);
-	bouncyBallComponent.repaint();
-    }
-
     public void addUpKeyListener(final IListener listener) {
-	mainFrame.requestFocus();
+	getMainFrame().requestFocus();
 
-	mainFrame.addKeyListener(new KeyAdapter() {
+	getMainFrame().addKeyListener(new KeyAdapter() {
 	    @Override
 	    public void keyPressed(KeyEvent e) {
 		if (38 == e.getKeyCode()) {
@@ -112,9 +73,9 @@ public class MainView implements IMainView {
     }
 
     public void addDownKeyListener(final IListener listener) {
-	mainFrame.requestFocus();
+	getMainFrame().requestFocus();
 
-	mainFrame.addKeyListener(new KeyAdapter() {
+	getMainFrame().addKeyListener(new KeyAdapter() {
 	    @Override
 	    public void keyPressed(KeyEvent e) {
 		if (40 == e.getKeyCode()) {
@@ -125,9 +86,9 @@ public class MainView implements IMainView {
     }
 
     public void addLeftKeyListener(final IListener listener) {
-	mainFrame.requestFocus();
+	getMainFrame().requestFocus();
 
-	mainFrame.addKeyListener(new KeyAdapter() {
+	getMainFrame().addKeyListener(new KeyAdapter() {
 	    @Override
 	    public void keyPressed(KeyEvent e) {
 		if (37 == e.getKeyCode()) {
@@ -138,9 +99,9 @@ public class MainView implements IMainView {
     }
 
     public void addRightKeyListener(final IListener listener) {
-	mainFrame.requestFocus();
+	getMainFrame().requestFocus();
 
-	mainFrame.addKeyListener(new KeyAdapter() {
+	getMainFrame().addKeyListener(new KeyAdapter() {
 	    @Override
 	    public void keyPressed(KeyEvent e) {
 		if (39 == e.getKeyCode()) {
@@ -148,6 +109,27 @@ public class MainView implements IMainView {
 		}
 	    }
 	});
+    }
+
+    private JFrame getMainFrame() {
+	return mainFrame;
+    }
+
+    public void showView() {
+	getMainFrame().setVisible(true);
+    }
+
+    public void addClosingListener(final IListener listener) {
+	getMainFrame().addWindowListener(new WindowAdapter() {
+	    @Override
+	    public void windowClosing(WindowEvent e) {
+		listener.fireEvent();
+	    }
+	});
+    }
+
+    public void addColorChangeListener(IListener listener) {
+	colorChangedListenerManager.addListener(listener);
     }
 
     public String getSelectedColor() {
