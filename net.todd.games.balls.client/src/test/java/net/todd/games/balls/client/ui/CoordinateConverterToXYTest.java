@@ -7,7 +7,7 @@ import java.awt.Point;
 
 import org.junit.Test;
 
-public class CoordinateConverterTest {
+public class CoordinateConverterToXYTest {
 	@Test
 	public void testToXYDoesNotReturnNull() {
 		CoordinateConverter converter = new CoordinateConverter();
