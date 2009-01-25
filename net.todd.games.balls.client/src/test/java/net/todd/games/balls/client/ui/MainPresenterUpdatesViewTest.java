@@ -18,11 +18,11 @@ public class MainPresenterUpdatesViewTest {
 		mockView = new MockView();
 		mockModel = new MockModel();
 	}
-	
+
 	@Test
 	public void testPresenterUpdatesBallsInView() {
 		new MainPresenter(mockView, mockModel);
-		
+
 		mockModel.ballData = new Ball[3];
 		mockModel.ballData[0] = new Ball();
 		mockModel.ballData[0].setColorRed(255);
@@ -43,16 +43,16 @@ public class MainPresenterUpdatesViewTest {
 		mockModel.listener.fireEvent();
 		assertNotNull(mockView.ballData);
 		assertEquals(255, mockView.ballData[0].getColorRed());
-		assertEquals(0, mockView.ballData[0].getPositionX());
-		assertEquals(0, mockView.ballData[0].getPositionY());
+		assertEquals(0.0f, mockView.ballData[0].getPositionX());
+		assertEquals(0.0f, mockView.ballData[0].getPositionY());
 
 		assertEquals(255, mockView.ballData[1].getColorBlue());
-		assertEquals(1, mockView.ballData[1].getPositionX());
-		assertEquals(2, mockView.ballData[1].getPositionY());
+		assertEquals(1.0f, mockView.ballData[1].getPositionX());
+		assertEquals(2.0f, mockView.ballData[1].getPositionY());
 
 		assertEquals(255, mockView.ballData[2].getColorGreen());
-		assertEquals(2, mockView.ballData[2].getPositionX());
-		assertEquals(3, mockView.ballData[2].getPositionY());
+		assertEquals(2.0f, mockView.ballData[2].getPositionX());
+		assertEquals(3.0f, mockView.ballData[2].getPositionY());
 	}
 
 	private static class MockView extends AbstractMainView {
@@ -67,7 +67,7 @@ public class MainPresenterUpdatesViewTest {
 		public void showView() {
 		}
 	}
-	
+
 	private static class MockModel extends AbstractMainModel {
 		private String ballPositionText;
 		private Ball[] ballData;
@@ -77,12 +77,12 @@ public class MainPresenterUpdatesViewTest {
 		public Ball[] getBallData() {
 			return ballData;
 		}
-		
+
 		@Override
 		public void addModelListener(IListener listener) {
 			this.listener = listener;
 		}
-		
+
 		@Override
 		public String getBallPositionText() {
 			return ballPositionText;
