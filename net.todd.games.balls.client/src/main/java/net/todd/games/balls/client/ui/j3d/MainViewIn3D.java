@@ -2,6 +2,8 @@ package net.todd.games.balls.client.ui.j3d;
 
 import java.awt.BorderLayout;
 import java.awt.GraphicsConfiguration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
@@ -11,6 +13,7 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.GeometryArray;
+import javax.media.j3d.Group;
 import javax.media.j3d.LineArray;
 import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
@@ -33,7 +36,22 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
 public class MainViewIn3D extends MainView implements IMainView {
+	private static final Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
+	private static final Color3f blue = new Color3f(0.0f, 0.0f, 0.0f);
+	private static final Color3f black = new Color3f(0.3f, 0.3f, 0.8f);
+	private static final Color3f specular = new Color3f(0.9f, 0.9f, 0.9f);
+
 	private Bounds bounds;
+	private final Map<String, Ball> allBalls;
+	private final Map<String, TransformGroup> ballGraphs;
+	private BranchGroup ballBranchGroup;
+
+	public MainViewIn3D() {
+		super();
+
+		allBalls = new HashMap<String, Ball>();
+		ballGraphs = new HashMap<String, TransformGroup>();
+	}
 
 	@Override
 	public JPanel createMainPanel() {
@@ -64,9 +82,17 @@ public class MainViewIn3D extends MainView implements IMainView {
 
 		lightScene(bg);
 		createGameGrid(bg);
-		createBall(bg);
+		createBallGroup(bg);
+		bg.compile();
 
 		return bg;
+	}
+
+	private void createBallGroup(BranchGroup bg) {
+		ballBranchGroup = new BranchGroup();
+		ballBranchGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+
+		bg.addChild(ballBranchGroup);
 	}
 
 	private void createGameGrid(BranchGroup bg) {
@@ -118,25 +144,27 @@ public class MainViewIn3D extends MainView implements IMainView {
 		tg.setTransform(t3d);
 	}
 
-	private void createBall(BranchGroup bg) {
-		Color3f blue = new Color3f(0.0f, 0.0f, 0.0f);
-		Color3f black = new Color3f(0.3f, 0.3f, 0.8f);
-		Color3f specular = new Color3f(0.9f, 0.9f, 0.9f);
-
+	private void addBall(Ball ball) {
+		Appearance ballAppearance = new Appearance();
 		Material blueMat = new Material(blue, black, blue, specular, 25.0f);
-		Appearance blueApp = new Appearance();
-		blueApp.setMaterial(blueMat);
+		ballAppearance.setMaterial(blueMat);
 
+		Sphere sphere = new Sphere(0.5f, 1, 50, ballAppearance);
+
+		BranchGroup stupid = new BranchGroup();
 		Transform3D t3d = new Transform3D();
 		t3d.set(new Vector3f(0, 0, 0));
 		TransformGroup tg = new TransformGroup(t3d);
-		tg.addChild(new Sphere(0.5f, 1, 50, blueApp));
+		tg.addChild(sphere);
+		stupid.addChild(tg);
 
-		bg.addChild(tg);
+		ballBranchGroup.addChild(stupid);
+
+		allBalls.put(ball.getId(), ball);
+		ballGraphs.put(ball.getId(), tg);
 	}
 
 	private void lightScene(BranchGroup bg) {
-		Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
 		AmbientLight ambient = new AmbientLight(white);
 		ambient.setInfluencingBounds(bounds);
 		bg.addChild(ambient);
@@ -148,5 +176,17 @@ public class MainViewIn3D extends MainView implements IMainView {
 	}
 
 	public void setBallPositions(Ball[] ballData) {
+		if (ballData != null) {
+			for (Ball ball : ballData) {
+				if (!allBalls.values().contains(ball)) {
+					addBall(ball);
+				} else {
+					moveBall(ball);
+				}
+			}
+		}
+	}
+
+	private void moveBall(Ball ball) {
 	}
 }
