@@ -15,7 +15,7 @@ public class BallToStringTest {
 		ball.setPositionX(4);
 		ball.setPositionY(5);
 
-		assertEquals("Ball[123]: Color: {1, 2, 3}, Position: {4, 5}", ball.toString());
+		assertEquals("Ball[123]: Color: {1, 2, 3}, Position: {4.0, 5.0}", ball.toString());
 
 		Ball ball2 = new Ball();
 		ball2.setId("456");
@@ -25,6 +25,7 @@ public class BallToStringTest {
 		ball2.setPositionX(8);
 		ball2.setPositionY(9);
 
-		assertEquals("Ball[456]: Color: {5, 6, 7}, Position: {8, 9}", ball2.toString());
+		assertEquals("Ball[456]: Color: {5, 6, 7}, Position: {8.0, 9.0}", ball2
+		        .toString());
 	}
 }
