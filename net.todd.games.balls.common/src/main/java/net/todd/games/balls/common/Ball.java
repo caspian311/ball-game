@@ -8,22 +8,24 @@ public class Ball implements Serializable {
 	private int colorRed;
 	private int colorGreen;
 	private int colorBlue;
-	private int positionX;
-	private int positionY;
+	private float positionX;
+	private float positionY;
+	private float positionZ;
+	private String id;
 
-	public int getPositionX() {
+	public float getPositionX() {
 		return positionX;
 	}
 
-	public void setPositionX(int positionX) {
+	public void setPositionX(float positionX) {
 		this.positionX = positionX;
 	}
 
-	public int getPositionY() {
+	public float getPositionY() {
 		return positionY;
 	}
 
-	public void setPositionY(int positionY) {
+	public void setPositionY(float positionY) {
 		this.positionY = positionY;
 	}
 
@@ -50,10 +52,41 @@ public class Ball implements Serializable {
 	public void setColorBlue(int colorBlue) {
 		this.colorBlue = colorBlue;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Color: {" + colorRed + ", " + colorGreen + ", " + colorBlue
-				+ "}, Position: {" + positionX + ", " + positionY + "}";
+		return "Ball[" + id + "]: Color: {" + colorRed + ", " + colorGreen + ", "
+		        + colorBlue + "}, Position: {" + positionX + ", " + positionY + "}";
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setPositionZ(float positionZ) {
+		this.positionZ = positionZ;
+	}
+
+	public float getPositionZ() {
+		return positionZ;
+	}
+
+	@Override
+	public Ball clone() {
+		Ball clone = new Ball();
+
+		clone.id = this.id;
+		clone.colorRed = this.colorRed;
+		clone.colorGreen = this.colorGreen;
+		clone.colorBlue = this.colorBlue;
+		clone.positionX = this.positionX;
+		clone.positionY = this.positionY;
+		clone.positionZ = this.positionZ;
+
+		return clone;
 	}
 }
