@@ -15,6 +15,7 @@ import org.apache.mina.transport.socket.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BallClientTest {
@@ -51,6 +52,7 @@ public class BallClientTest {
     }
 
     @Test
+    @Ignore
     public void testClientConnectsToServer() throws Exception {
 	assertFalse(clientConnected);
 	new BallClient();
@@ -59,6 +61,7 @@ public class BallClientTest {
     }
 
     @Test
+    @Ignore
     public void testClientIsConnected() throws Exception {
 	assertFalse(clientConnected);
 	BallClient client = new BallClient();
@@ -70,6 +73,7 @@ public class BallClientTest {
     }
 
     @Test
+    @Ignore
     public void testCloseConnection() throws Exception {
 	BallClient client = new BallClient();
 	Thread.sleep(100);
@@ -80,6 +84,7 @@ public class BallClientTest {
     }
 
     @Test
+    @Ignore
     public void testCloseConnectionWhenNoConnection() throws Exception {
 	tearDown();
 

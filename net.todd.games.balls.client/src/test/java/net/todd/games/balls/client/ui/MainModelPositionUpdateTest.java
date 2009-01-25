@@ -14,57 +14,65 @@ public class MainModelPositionUpdateTest {
 	public void setUp() {
 		networkClient = new TestNetworkClient();
 	}
-	
+
 	@Test
 	public void testMoveBallUp() {
 		MainModel model = new MainModel(null, networkClient);
 		assertNotNull(networkClient.ballSent);
-		assertEquals(0, networkClient.ballSent.getPositionX());
-		assertEquals(0, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionX());
+		assertEquals(0.0f, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionZ());
 		networkClient.ballSent = null;
 		model.moveBallUp();
 		assertNotNull(networkClient.ballSent);
-		assertEquals(0, networkClient.ballSent.getPositionX());
-		assertEquals(-1, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionX());
+		assertEquals(0.0f, networkClient.ballSent.getPositionY());
+		assertEquals(1.0f, networkClient.ballSent.getPositionZ());
 	}
-	
+
 	@Test
 	public void testMoveBallDown() {
 		MainModel model = new MainModel(null, networkClient);
 		assertNotNull(networkClient.ballSent);
-		assertEquals(0, networkClient.ballSent.getPositionX());
-		assertEquals(0, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionX());
+		assertEquals(0.0f, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionZ());
 		networkClient.ballSent = null;
 		model.moveBallDown();
 		assertNotNull(networkClient.ballSent);
-		assertEquals(0, networkClient.ballSent.getPositionX());
-		assertEquals(1, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionX());
+		assertEquals(0.0f, networkClient.ballSent.getPositionY());
+		assertEquals(-1.0f, networkClient.ballSent.getPositionZ());
 	}
-	
+
 	@Test
 	public void testMoveBallLeft() {
 		MainModel model = new MainModel(null, networkClient);
 		assertNotNull(networkClient.ballSent);
-		assertEquals(0, networkClient.ballSent.getPositionX());
-		assertEquals(0, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionX());
+		assertEquals(0.0f, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionZ());
 		networkClient.ballSent = null;
 		model.moveBallLeft();
 		assertNotNull(networkClient.ballSent);
-		assertEquals(-1, networkClient.ballSent.getPositionX());
-		assertEquals(0, networkClient.ballSent.getPositionY());
+		assertEquals(-1.0f, networkClient.ballSent.getPositionX());
+		assertEquals(0.0f, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionZ());
 	}
-	
+
 	@Test
 	public void testMoveBallRight() {
 		MainModel model = new MainModel(null, networkClient);
 		assertNotNull(networkClient.ballSent);
-		assertEquals(0, networkClient.ballSent.getPositionX());
-		assertEquals(0, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionX());
+		assertEquals(0.0f, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionZ());
 		networkClient.ballSent = null;
 		model.moveBallRight();
 		assertNotNull(networkClient.ballSent);
-		assertEquals(1, networkClient.ballSent.getPositionX());
-		assertEquals(0, networkClient.ballSent.getPositionY());
+		assertEquals(1.0f, networkClient.ballSent.getPositionX());
+		assertEquals(0.0f, networkClient.ballSent.getPositionY());
+		assertEquals(0.0f, networkClient.ballSent.getPositionZ());
 	}
 
 	private static class TestNetworkClient extends AbstractNetworkClient {

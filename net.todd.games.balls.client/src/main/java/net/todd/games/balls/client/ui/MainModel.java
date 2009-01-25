@@ -1,6 +1,7 @@
 package net.todd.games.balls.client.ui;
 
 import java.awt.Color;
+import java.util.UUID;
 
 import net.todd.common.uitools.IListener;
 import net.todd.common.uitools.ListenerManager;
@@ -14,8 +15,7 @@ public class MainModel implements IMainModel {
 	private Ball myBall;
 	private final INetworkClient networkClient;
 
-	public MainModel(ISystemKiller systemKiller,
-			final INetworkClient networkClient) {
+	public MainModel(ISystemKiller systemKiller, final INetworkClient networkClient) {
 		this.systemKiller = systemKiller;
 		this.networkClient = networkClient;
 
@@ -36,6 +36,7 @@ public class MainModel implements IMainModel {
 
 	private void createDefaultBall() {
 		myBall = new Ball();
+		myBall.setId(UUID.randomUUID().toString());
 		myBall.setColorRed(255);
 		myBall.setColorGreen(255);
 		myBall.setColorBlue(255);
@@ -60,12 +61,12 @@ public class MainModel implements IMainModel {
 	}
 
 	public void moveBallUp() {
-		myBall.setPositionY(myBall.getPositionY() - 1);
+		myBall.setPositionZ(myBall.getPositionZ() + 1);
 		networkClient.update(myBall);
 	}
 
 	public void moveBallDown() {
-		myBall.setPositionY(myBall.getPositionY() + 1);
+		myBall.setPositionZ(myBall.getPositionZ() - 1);
 		networkClient.update(myBall);
 	}
 

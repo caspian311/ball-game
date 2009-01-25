@@ -3,6 +3,11 @@ package net.todd.games.balls.client.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.todd.common.uitools.IListener;
 import net.todd.games.balls.common.Ball;
 
@@ -19,12 +24,12 @@ public class MainModelNetworkTest {
 		public void update(Ball ball) {
 			ballReceived = ball;
 		}
-		
+
 		@Override
 		public Ball[] getBalls() {
 			return allBallsOnNetwork;
 		}
-		
+
 		@Override
 		public void addListener(IListener listener) {
 			networkListener = listener;
@@ -37,7 +42,7 @@ public class MainModelNetworkTest {
 	public void setUp() {
 		networkClient = new MockNetworkClient();
 	}
-	
+
 	@Test
 	public void testWhenModelStartsUpTellsNetworkAboutNewBall() {
 		assertNull(networkClient.ballReceived);
@@ -46,10 +51,27 @@ public class MainModelNetworkTest {
 		assertEquals(255, networkClient.ballReceived.getColorBlue());
 		assertEquals(255, networkClient.ballReceived.getColorRed());
 		assertEquals(255, networkClient.ballReceived.getColorGreen());
-		assertEquals(0, networkClient.ballReceived.getPositionX());
-		assertEquals(0, networkClient.ballReceived.getPositionY());
+		assertEquals(0.0f, networkClient.ballReceived.getPositionX());
+		assertEquals(0.0f, networkClient.ballReceived.getPositionY());
+		assertEquals(0.0f, networkClient.ballReceived.getPositionZ());
 	}
-	
+
+	@Test
+	public void testAllBallsGetUniqueIdToStartWith() {
+		new MainModel(null, networkClient);
+		List<String> previousIds = new ArrayList<String>();
+		previousIds.add(networkClient.ballReceived.getId());
+		networkClient.ballReceived = null;
+		for (int i = 0; i < 1000; i++) {
+			new MainModel(null, networkClient);
+			if (previousIds.contains(networkClient.ballReceived.getId())) {
+				fail("Id not unique");
+			}
+			previousIds.add(networkClient.ballReceived.getId());
+			networkClient.ballReceived = null;
+		}
+	}
+
 	@Test
 	public void testModelGetsBallsFromNetworkWhenNotified() {
 		networkClient.allBallsOnNetwork = new Ball[2];
@@ -59,12 +81,12 @@ public class MainModelNetworkTest {
 		networkClient.allBallsOnNetwork[1] = new Ball();
 		networkClient.allBallsOnNetwork[1].setPositionX(3);
 		networkClient.allBallsOnNetwork[1].setPositionY(4);
-		
+
 		MainModel model = new MainModel(null, networkClient);
 		assertNull(model.getBallData());
 		networkClient.networkListener.fireEvent();
 		assertNotNull(model.getBallData());
-		
+
 		Ball[] balls = model.getBallData();
 		assertEquals(2, balls.length);
 		assertEquals(1, balls[0].getPositionX());
