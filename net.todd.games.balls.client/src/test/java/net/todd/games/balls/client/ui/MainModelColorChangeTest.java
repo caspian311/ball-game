@@ -22,8 +22,7 @@ public class MainModelColorChangeTest {
 		new MainModel(null, network);
 
 		assertEquals(Color.white.getRed(), network.ballReceived.getColorRed());
-		assertEquals(Color.white.getGreen(), network.ballReceived
-				.getColorGreen());
+		assertEquals(Color.white.getGreen(), network.ballReceived.getColorGreen());
 		assertEquals(Color.white.getBlue(), network.ballReceived.getColorBlue());
 	}
 
@@ -35,8 +34,7 @@ public class MainModelColorChangeTest {
 		model.updateColor("White");
 
 		assertEquals(Color.white.getRed(), network.ballReceived.getColorRed());
-		assertEquals(Color.white.getGreen(), network.ballReceived
-				.getColorGreen());
+		assertEquals(Color.white.getGreen(), network.ballReceived.getColorGreen());
 		assertEquals(Color.white.getBlue(), network.ballReceived.getColorBlue());
 	}
 
@@ -60,10 +58,8 @@ public class MainModelColorChangeTest {
 		model.updateColor("Orange");
 
 		assertEquals(Color.orange.getRed(), network.ballReceived.getColorRed());
-		assertEquals(Color.orange.getGreen(), network.ballReceived
-				.getColorGreen());
-		assertEquals(Color.orange.getBlue(), network.ballReceived
-				.getColorBlue());
+		assertEquals(Color.orange.getGreen(), network.ballReceived.getColorGreen());
+		assertEquals(Color.orange.getBlue(), network.ballReceived.getColorBlue());
 	}
 
 	@Test
@@ -74,10 +70,8 @@ public class MainModelColorChangeTest {
 		model.updateColor("Yellow");
 
 		assertEquals(Color.yellow.getRed(), network.ballReceived.getColorRed());
-		assertEquals(Color.yellow.getGreen(), network.ballReceived
-				.getColorGreen());
-		assertEquals(Color.yellow.getBlue(), network.ballReceived
-				.getColorBlue());
+		assertEquals(Color.yellow.getGreen(), network.ballReceived.getColorGreen());
+		assertEquals(Color.yellow.getBlue(), network.ballReceived.getColorBlue());
 	}
 
 	@Test
@@ -88,8 +82,7 @@ public class MainModelColorChangeTest {
 		model.updateColor("Green");
 
 		assertEquals(Color.green.getRed(), network.ballReceived.getColorRed());
-		assertEquals(Color.green.getGreen(), network.ballReceived
-				.getColorGreen());
+		assertEquals(Color.green.getGreen(), network.ballReceived.getColorGreen());
 		assertEquals(Color.green.getBlue(), network.ballReceived.getColorBlue());
 	}
 
@@ -101,11 +94,10 @@ public class MainModelColorChangeTest {
 		model.updateColor("Blue");
 
 		assertEquals(Color.blue.getRed(), network.ballReceived.getColorRed());
-		assertEquals(Color.blue.getGreen(), network.ballReceived
-				.getColorGreen());
+		assertEquals(Color.blue.getGreen(), network.ballReceived.getColorGreen());
 		assertEquals(Color.blue.getBlue(), network.ballReceived.getColorBlue());
 	}
-	
+
 	@Test
 	public void testPurpleColorChangeGetsBallSentToNetwork() {
 		MainModel model = new MainModel(null, network);
@@ -126,8 +118,7 @@ public class MainModelColorChangeTest {
 		model.updateColor("Black");
 
 		assertEquals(Color.black.getRed(), network.ballReceived.getColorRed());
-		assertEquals(Color.black.getGreen(), network.ballReceived
-				.getColorGreen());
+		assertEquals(Color.black.getGreen(), network.ballReceived.getColorGreen());
 		assertEquals(Color.black.getBlue(), network.ballReceived.getColorBlue());
 	}
 
@@ -136,7 +127,7 @@ public class MainModelColorChangeTest {
 
 		@Override
 		public void update(Ball ball) {
-			ballReceived = ball;
+			ballReceived = ball.clone();
 		}
 	}
 }

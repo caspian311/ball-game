@@ -22,7 +22,6 @@ public class MainModel implements IMainModel {
 		if (networkClient != null) {
 			createDefaultBall();
 			networkClient.update(myBall);
-
 			networkClient.addListener(new IListener() {
 				public void fireEvent() {
 					balls = networkClient.getBalls();
@@ -114,5 +113,6 @@ public class MainModel implements IMainModel {
 			myBall.setColorGreen(Color.black.getGreen());
 			myBall.setColorBlue(Color.black.getBlue());
 		}
+		networkClient.update(myBall);
 	}
 }
