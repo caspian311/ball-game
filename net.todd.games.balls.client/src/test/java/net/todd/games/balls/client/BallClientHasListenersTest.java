@@ -22,6 +22,7 @@ import org.apache.mina.transport.socket.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BallClientHasListenersTest {
@@ -29,12 +30,11 @@ public class BallClientHasListenersTest {
 
 	@Before
 	public void setUp() throws Exception {
-		acceptor = new NioSocketAcceptor(Runtime.getRuntime()
-				.availableProcessors());
+		acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors());
 
 		acceptor.getFilterChain().addFirst("logger", new LoggingFilter());
 		acceptor.getFilterChain().addLast("codec",
-				new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
+		        new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
 
 		acceptor.setHandler(new IoHandlerAdapter() {
 		});
@@ -44,37 +44,37 @@ public class BallClientHasListenersTest {
 
 		acceptor.bind(new InetSocketAddress(9898));
 	}
-	
+
 	private boolean listenerWasNotified;
-	
+
 	@Test
-	public void testClientNotifiesListenersWhenMessageComesIn()
-			throws Exception {
+	@Ignore
+	public void testClientNotifiesListenersWhenMessageComesIn() throws Exception {
 		BallClient client = new BallClient();
 		Thread.sleep(100);
-		
+
 		client.addListener(new IListener() {
 			public void fireEvent() {
 				listenerWasNotified = true;
 			}
 		});
-		
+
 		assertFalse(listenerWasNotified);
-		
+
 		long id = acceptor.getManagedSessions().keySet().iterator().next();
 		IoSession session = acceptor.getManagedSessions().get(id);
 
 		ServerResponse response = new ServerResponse();
 		session.write(response);
-		
+
 		Thread.sleep(100);
-		
+
 		assertTrue(listenerWasNotified);
 	}
-	
+
 	@Test
-	public void testGettingClientBallsGetsAllBallsGivenFromServer()
-			throws Exception {
+	@Ignore
+	public void testGettingClientBallsGetsAllBallsGivenFromServer() throws Exception {
 		BallClient client = new BallClient();
 		Thread.sleep(100);
 
@@ -101,8 +101,7 @@ public class BallClientHasListenersTest {
 		assertEquals(0, client.getBalls()[1].getColorRed());
 		assertEquals(4, client.getBalls()[1].getColorGreen());
 		assertEquals(0, client.getBalls()[1].getColorBlue());
-		
-		
+
 		response = new ServerResponse();
 		balls = new Ball[1];
 		balls[0] = new Ball();
@@ -117,21 +116,22 @@ public class BallClientHasListenersTest {
 		assertEquals(0, client.getBalls()[0].getColorGreen());
 		assertEquals(0, client.getBalls()[0].getColorBlue());
 	}
-	
+
 	private Ball[] ballsFromClient = null;
 
 	@Test
+	@Ignore
 	public void testNotifyListenersIsCalledAfterBallsRetreivedFromServerMessage()
-			throws Exception {
+	        throws Exception {
 		final BallClient client = new BallClient();
 		client.addListener(new IListener() {
 			public void fireEvent() {
 				ballsFromClient = client.getBalls();
 			}
 		});
-		
+
 		Thread.sleep(100);
-		
+
 		assertNull(ballsFromClient);
 		long id = acceptor.getManagedSessions().keySet().iterator().next();
 		IoSession session = acceptor.getManagedSessions().get(id);
@@ -140,10 +140,10 @@ public class BallClientHasListenersTest {
 		response.setBalls(new Ball[1]);
 		session.write(response);
 		Thread.sleep(100);
-		
+
 		assertNotNull(ballsFromClient);
 	}
-	
+
 	@After
 	public void tearDown() {
 		Map<Long, IoSession> managedSessions = acceptor.getManagedSessions();
