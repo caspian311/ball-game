@@ -38,14 +38,14 @@ public class BouncyBallComponent extends Component {
 	}
 
 	private void drawGrid(Graphics g) {
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i <= 20; i++) {
 			Point startingPoint = coordinateConverter.scale(new Point(0, i), getSize());
 			Point endingPoint = coordinateConverter.scale(new Point(20, i), getSize());
 
 			g.drawLine(startingPoint.x, startingPoint.y, endingPoint.x, endingPoint.y);
 		}
 
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i <= 20; i++) {
 			Point startingPoint = coordinateConverter.scale(new Point(i, 0), getSize());
 			Point endingPoint = coordinateConverter.scale(new Point(i, 20), getSize());
 

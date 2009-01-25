@@ -72,17 +72,16 @@ public class MainViewIn3D extends MainView implements IMainView {
 	private void createGameGrid(BranchGroup bg) {
 		Shape3D grid = new Shape3D();
 
-		Point3f[] points = new Point3f[80];
+		Point3f[] points = new Point3f[84];
 		int index = 0;
-		for (int i = -10; i < 10; i++) {
+		for (int i = -10; i <= 10; i++) {
 			float zPos = i;
 			points[index * 2] = new Point3f(-10.0f, 0.0f, zPos);
 			points[index * 2 + 1] = new Point3f(10.0f, 0.0f, zPos);
 			index++;
 		}
 
-		index = 20;
-		for (int i = -10; i < 10; i++) {
+		for (int i = -10; i <= 10; i++) {
 			float xPos = i;
 			points[index * 2] = new Point3f(xPos, 0.0f, -10.0f);
 			points[index * 2 + 1] = new Point3f(xPos, 0.0f, 10.0f);
@@ -113,7 +112,7 @@ public class MainViewIn3D extends MainView implements IMainView {
 		TransformGroup tg = vp.getViewPlatformTransform();
 		Transform3D t3d = new Transform3D();
 		tg.getTransform(t3d);
-		t3d.lookAt(new Point3d(10.0, 10.0, 10.0), new Point3d(0.0, 0.0, 0.0),
+		t3d.lookAt(new Point3d(0.0, 10.0, 25.0), new Point3d(0.0, 0.0, 0.0),
 		        new Vector3d(0, 1, 0));
 		t3d.invert();
 		tg.setTransform(t3d);
