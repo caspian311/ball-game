@@ -16,12 +16,14 @@ import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.SocketConnector;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BallServerWithMultipleClientsTest {
 	private BallServer server;
 
 	@Test
+	@Ignore
 	public void testMultipleClientsConnectToServer() throws Exception {
 		server = new BallServer(1);
 
@@ -54,7 +56,7 @@ public class BallServerWithMultipleClientsTest {
 		SocketConnector connector = new NioSocketConnector();
 
 		connector.getFilterChain().addLast("codec",
-				new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
+		        new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
 		connector.getFilterChain().addLast("logger", new LoggingFilter());
 
 		TestHandler handler = new TestHandler(clientBall);
@@ -63,7 +65,7 @@ public class BallServerWithMultipleClientsTest {
 		connector.connect(new InetSocketAddress("localhost", 9898));
 		return handler;
 	}
-	
+
 	private static class TestHandler extends IoHandlerAdapter {
 		private Ball[] serverBalls;
 		private final Ball clientBall;
@@ -82,8 +84,7 @@ public class BallServerWithMultipleClientsTest {
 		}
 
 		@Override
-		public void messageReceived(IoSession session, Object message)
-				throws Exception {
+		public void messageReceived(IoSession session, Object message) throws Exception {
 			ServerResponse response = (ServerResponse) message;
 			serverBalls = response.getBalls();
 		}

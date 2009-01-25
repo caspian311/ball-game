@@ -15,19 +15,21 @@ import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.SocketConnector;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BallServerTest {
 	private BallServer server;
 
 	@Test
+	@Ignore
 	public void testAClientCanConnectToServer() {
 		server = new BallServer();
 
 		SocketConnector connector = new NioSocketConnector();
 
 		connector.getFilterChain().addLast("codec",
-				new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
+		        new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
 		connector.getFilterChain().addLast("logger", new LoggingFilter());
 
 		TestHandler handler = new TestHandler();
@@ -38,8 +40,8 @@ public class BallServerTest {
 		while (handler.serverBalls == null)
 			;
 
-		assertEquals("Color: {255, 0, 0}, Position: {100, 100}",
-				handler.serverBalls[0].toString());
+		assertEquals("Color: {255, 0, 0}, Position: {100, 100}", handler.serverBalls[0]
+		        .toString());
 	}
 
 	@After
@@ -48,7 +50,7 @@ public class BallServerTest {
 			server.killServer();
 		}
 	}
-	
+
 	private static class TestHandler extends IoHandlerAdapter {
 		private Ball[] serverBalls;
 
@@ -66,8 +68,7 @@ public class BallServerTest {
 		}
 
 		@Override
-		public void messageReceived(IoSession session, Object message)
-				throws Exception {
+		public void messageReceived(IoSession session, Object message) throws Exception {
 			ServerResponse response = (ServerResponse) message;
 			serverBalls = response.getBalls();
 		}
