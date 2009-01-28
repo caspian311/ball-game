@@ -10,9 +10,7 @@ public class BallCloneTest {
 	public void testClone() {
 		Ball ball1 = new Ball();
 		ball1.setId("123");
-		ball1.setColorRed(1);
-		ball1.setColorGreen(2);
-		ball1.setColorBlue(3);
+		ball1.setColor(BallColor.Purple);
 		ball1.setPositionX(4);
 		ball1.setPositionY(5);
 		ball1.setPositionZ(6);
@@ -20,9 +18,9 @@ public class BallCloneTest {
 		Ball ball2 = ball1.clone();
 		assertFalse(ball1 == ball2);
 		assertEquals("123", ball2.getId());
-		assertEquals(1, ball2.getColorRed());
-		assertEquals(2, ball2.getColorGreen());
-		assertEquals(3, ball2.getColorBlue());
+		assertEquals(255, ball2.getColor().getColor().getRed());
+		assertEquals(0, ball2.getColor().getColor().getGreen());
+		assertEquals(255, ball2.getColor().getColor().getBlue());
 		assertEquals(4.0f, ball2.getPositionX());
 		assertEquals(5.0f, ball2.getPositionY());
 		assertEquals(6.0f, ball2.getPositionZ());
