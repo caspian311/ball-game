@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.net.InetSocketAddress;
 
 import net.todd.games.balls.common.Ball;
+import net.todd.games.balls.common.BallColor;
 import net.todd.games.balls.common.ServerResponse;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -40,7 +41,7 @@ public class BallServerTest {
 		while (handler.serverBalls == null)
 			;
 
-		assertEquals("Color: {255, 0, 0}, Position: {100, 100}", handler.serverBalls[0]
+		assertEquals("Color: Red, Position: {100, 100}", handler.serverBalls[0]
 		        .toString());
 	}
 
@@ -59,9 +60,7 @@ public class BallServerTest {
 			System.out.println("Client: session was opened");
 
 			Ball ball = new Ball();
-			ball.setColorRed(255);
-			ball.setColorGreen(0);
-			ball.setColorBlue(0);
+			ball.setColor(BallColor.Red);
 			ball.setPositionX(100);
 			ball.setPositionY(100);
 			session.write(ball);

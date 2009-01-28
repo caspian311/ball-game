@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import java.net.InetSocketAddress;
 
 import net.todd.games.balls.common.Ball;
+import net.todd.games.balls.common.BallColor;
 import net.todd.games.balls.common.ServerResponse;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -28,9 +29,7 @@ public class BallServerWithMultipleClientsTest {
 		server = new BallServer(1);
 
 		Ball ball = new Ball();
-		ball.setColorRed(255);
-		ball.setColorGreen(0);
-		ball.setColorBlue(0);
+		ball.setColor(BallColor.Red);
 		ball.setPositionX(100);
 		ball.setPositionY(100);
 
