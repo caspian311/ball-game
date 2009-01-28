@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import java.util.Map;
 
 import net.todd.games.balls.common.Ball;
+import net.todd.games.balls.common.BallColor;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
@@ -80,12 +81,12 @@ public class BallClientUpdateTest {
 		BallClient ballClient = new BallClient();
 		Thread.sleep(100);
 		Ball ball = new Ball();
-		ball.setColorBlue(255);
+		ball.setColor(BallColor.Blue);
 		ballClient.update(ball);
 		Thread.sleep(100);
-		assertEquals(255, ballReceived.getColorBlue());
-		assertEquals(0, ballReceived.getColorRed());
-		assertEquals(0, ballReceived.getColorGreen());
+		assertEquals(0, ballReceived.getColor().getColor().getRed());
+		assertEquals(0, ballReceived.getColor().getColor().getGreen());
+		assertEquals(255, ballReceived.getColor().getColor().getBlue());
 	}
 
 	@After

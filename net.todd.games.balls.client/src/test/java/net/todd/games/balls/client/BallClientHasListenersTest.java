@@ -11,6 +11,7 @@ import java.util.Map;
 
 import net.todd.common.uitools.IListener;
 import net.todd.games.balls.common.Ball;
+import net.todd.games.balls.common.BallColor;
 import net.todd.games.balls.common.ServerResponse;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -86,35 +87,35 @@ public class BallClientHasListenersTest {
 		ServerResponse response = new ServerResponse();
 		Ball[] balls = new Ball[2];
 		balls[0] = new Ball();
-		balls[0].setColorBlue(3);
+		balls[0].setColor(BallColor.Blue);
 		balls[1] = new Ball();
-		balls[1].setColorGreen(4);
+		balls[1].setColor(BallColor.Green);
 		response.setBalls(balls);
 		session.write(response);
 
 		Thread.sleep(100);
 
 		assertEquals(2, client.getBalls().length);
-		assertEquals(0, client.getBalls()[0].getColorRed());
-		assertEquals(0, client.getBalls()[0].getColorGreen());
-		assertEquals(3, client.getBalls()[0].getColorBlue());
-		assertEquals(0, client.getBalls()[1].getColorRed());
-		assertEquals(4, client.getBalls()[1].getColorGreen());
-		assertEquals(0, client.getBalls()[1].getColorBlue());
+		assertEquals(0, client.getBalls()[0].getColor().getColor().getRed());
+		assertEquals(0, client.getBalls()[0].getColor().getColor().getGreen());
+		assertEquals(255, client.getBalls()[0].getColor().getColor().getBlue());
+		assertEquals(0, client.getBalls()[1].getColor().getColor().getRed());
+		assertEquals(255, client.getBalls()[1].getColor().getColor().getGreen());
+		assertEquals(0, client.getBalls()[1].getColor().getColor().getBlue());
 
 		response = new ServerResponse();
 		balls = new Ball[1];
 		balls[0] = new Ball();
-		balls[0].setColorRed(2);
+		balls[0].setColor(BallColor.Red);
 		response.setBalls(balls);
 		session.write(response);
 
 		Thread.sleep(100);
 
 		assertEquals(1, client.getBalls().length);
-		assertEquals(2, client.getBalls()[0].getColorRed());
-		assertEquals(0, client.getBalls()[0].getColorGreen());
-		assertEquals(0, client.getBalls()[0].getColorBlue());
+		assertEquals(255, client.getBalls()[0].getColor().getColor().getRed());
+		assertEquals(0, client.getBalls()[0].getColor().getColor().getGreen());
+		assertEquals(0, client.getBalls()[0].getColor().getColor().getBlue());
 	}
 
 	private Ball[] ballsFromClient = null;

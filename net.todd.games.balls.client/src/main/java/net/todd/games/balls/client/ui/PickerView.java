@@ -17,79 +17,86 @@ import net.todd.common.uitools.IListener;
 import net.todd.common.uitools.ListenerManager;
 
 public abstract class PickerView {
-    private final ListenerManager listenerManager;
-    private final JFrame frame;
-    private JComboBox dropDownMenu;
+	private final ListenerManager listenerManager;
+	private final ListenerManager cancelListenerManager;
+	private final JFrame frame;
+	private JComboBox dropDownMenu;
 
-    public PickerView() {
-	listenerManager = new ListenerManager();
+	public PickerView() {
+		listenerManager = new ListenerManager();
+		cancelListenerManager = new ListenerManager();
 
-	frame = new JFrame(getFrameTitle());
-	Container c = new Container();
-	c.setLayout(new BorderLayout());
+		frame = new JFrame(getFrameTitle());
+		Container c = new Container();
+		c.setLayout(new BorderLayout());
 
-	c.add(createMainPanel(), BorderLayout.CENTER);
-	c.add(createControlPanel(), BorderLayout.SOUTH);
+		c.add(createMainPanel(), BorderLayout.CENTER);
+		c.add(createControlPanel(), BorderLayout.SOUTH);
 
-	frame.getContentPane().add(c);
+		frame.getContentPane().add(c);
 
-	frame.pack();
-	frame.setVisible(true);
-    }
+		frame.pack();
+		frame.setVisible(true);
+	}
 
-    private JPanel createMainPanel() {
-	JPanel mainPanel = new JPanel();
-	mainPanel.setLayout(new BorderLayout());
+	private JPanel createMainPanel() {
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout());
 
-	mainPanel.add(new Label(getLabelText()), BorderLayout.WEST);
+		mainPanel.add(new Label(getLabelText()), BorderLayout.WEST);
 
-	dropDownMenu = new JComboBox();
-	populateDropDownMenu(dropDownMenu);
+		dropDownMenu = new JComboBox();
+		populateDropDownMenu(dropDownMenu);
 
-	mainPanel.add(dropDownMenu, BorderLayout.CENTER);
+		mainPanel.add(dropDownMenu, BorderLayout.CENTER);
 
-	return mainPanel;
-    }
+		return mainPanel;
+	}
 
-    abstract String getLabelText();
+	abstract String getLabelText();
 
-    abstract void populateDropDownMenu(JComboBox dropDownMenu);
+	abstract void populateDropDownMenu(JComboBox dropDownMenu);
 
-    abstract String getFrameTitle();
+	abstract String getFrameTitle();
 
-    private Component createControlPanel() {
-	JPanel panel = new JPanel();
-	panel.setLayout(new FlowLayout());
+	private Component createControlPanel() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout());
 
-	JButton okButton = new JButton("Ok");
-	okButton.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		closePopup();
-		listenerManager.notifyListeners();
-	    }
-	});
-	JButton cancelButton = new JButton("Cancel");
-	cancelButton.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		closePopup();
-	    }
-	});
+		JButton okButton = new JButton("Ok");
+		okButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				closePopup();
+				listenerManager.notifyListeners();
+			}
+		});
+		JButton cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				closePopup();
+				cancelListenerManager.notifyListeners();
+			}
+		});
 
-	panel.add(okButton);
-	panel.add(cancelButton);
+		panel.add(okButton);
+		panel.add(cancelButton);
 
-	return panel;
-    }
+		return panel;
+	}
 
-    private void closePopup() {
-	frame.setVisible(false);
-    }
+	private void closePopup() {
+		frame.setVisible(false);
+	}
 
-    public void addChangeListener(IListener listener) {
-	listenerManager.addListener(listener);
-    }
+	public void addCancelListener(IListener listener) {
+		cancelListenerManager.addListener(listener);
+	}
 
-    Object getSelection() {
-	return dropDownMenu.getSelectedItem();
-    }
+	public void addChangeListener(IListener listener) {
+		listenerManager.addListener(listener);
+	}
+
+	Object getSelection() {
+		return dropDownMenu.getSelectedItem();
+	}
 }

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import net.todd.common.uitools.IListener;
 import net.todd.games.balls.common.Ball;
+import net.todd.games.balls.common.BallColor;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,32 +26,32 @@ public class MainPresenterUpdatesViewTest {
 
 		mockModel.ballData = new Ball[3];
 		mockModel.ballData[0] = new Ball();
-		mockModel.ballData[0].setColorRed(255);
+		mockModel.ballData[0].setColor(BallColor.Red);
 		mockModel.ballData[0].setPositionX(0);
 		mockModel.ballData[0].setPositionY(0);
 
 		mockModel.ballData[1] = new Ball();
-		mockModel.ballData[1].setColorBlue(255);
+		mockModel.ballData[1].setColor(BallColor.Blue);
 		mockModel.ballData[1].setPositionX(1);
 		mockModel.ballData[1].setPositionY(2);
 
 		mockModel.ballData[2] = new Ball();
-		mockModel.ballData[2].setColorGreen(255);
+		mockModel.ballData[2].setColor(BallColor.Green);
 		mockModel.ballData[2].setPositionX(2);
 		mockModel.ballData[2].setPositionY(3);
 
 		assertNull(mockView.ballData);
 		mockModel.listener.fireEvent();
 		assertNotNull(mockView.ballData);
-		assertEquals(255, mockView.ballData[0].getColorRed());
+		assertEquals(255, mockView.ballData[0].getColor().getColor().getRed());
 		assertEquals(0.0f, mockView.ballData[0].getPositionX());
 		assertEquals(0.0f, mockView.ballData[0].getPositionY());
 
-		assertEquals(255, mockView.ballData[1].getColorBlue());
+		assertEquals(255, mockView.ballData[1].getColor().getColor().getBlue());
 		assertEquals(1.0f, mockView.ballData[1].getPositionX());
 		assertEquals(2.0f, mockView.ballData[1].getPositionY());
 
-		assertEquals(255, mockView.ballData[2].getColorGreen());
+		assertEquals(255, mockView.ballData[2].getColor().getColor().getGreen());
 		assertEquals(2.0f, mockView.ballData[2].getPositionX());
 		assertEquals(3.0f, mockView.ballData[2].getPositionY());
 	}

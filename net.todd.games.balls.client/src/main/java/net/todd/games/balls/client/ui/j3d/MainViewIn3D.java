@@ -2,7 +2,9 @@ package net.todd.games.balls.client.ui.j3d;
 
 import java.awt.BorderLayout;
 import java.awt.GraphicsConfiguration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.media.j3d.AmbientLight;
@@ -37,19 +39,18 @@ import com.sun.j3d.utils.universe.ViewingPlatform;
 
 public class MainViewIn3D extends MainView implements IMainView {
 	private static final Color3f white = new Color3f(1.0f, 1.0f, 1.0f);
-	private static final Color3f blue = new Color3f(0.0f, 0.0f, 0.0f);
-	private static final Color3f black = new Color3f(0.3f, 0.3f, 0.8f);
+	private static final Color3f black = new Color3f(0.0f, 0.0f, 0.0f);
 	private static final Color3f specular = new Color3f(0.9f, 0.9f, 0.9f);
 
 	private Bounds bounds;
-	private final Map<String, Ball> allBalls;
+	private final List<String> allBalls;
 	private final Map<String, TransformGroup> ballGraphs;
-	private BranchGroup ballBranchGroup;
+	private BranchGroup allBallsBG;
 
 	public MainViewIn3D() {
 		super();
 
-		allBalls = new HashMap<String, Ball>();
+		allBalls = new ArrayList<String>();
 		ballGraphs = new HashMap<String, TransformGroup>();
 	}
 
@@ -89,10 +90,10 @@ public class MainViewIn3D extends MainView implements IMainView {
 	}
 
 	private void createBallGroup(BranchGroup bg) {
-		ballBranchGroup = new BranchGroup();
-		ballBranchGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+		allBallsBG = new BranchGroup();
+		allBallsBG.setCapability(Group.ALLOW_CHILDREN_EXTEND);
 
-		bg.addChild(ballBranchGroup);
+		bg.addChild(allBallsBG);
 	}
 
 	private void createGameGrid(BranchGroup bg) {
@@ -138,7 +139,7 @@ public class MainViewIn3D extends MainView implements IMainView {
 		TransformGroup tg = vp.getViewPlatformTransform();
 		Transform3D t3d = new Transform3D();
 		tg.getTransform(t3d);
-		t3d.lookAt(new Point3d(0.0, 10.0, 25.0), new Point3d(0.0, 0.0, 0.0),
+		t3d.lookAt(new Point3d(0.0, 10.0, -25.0), new Point3d(0.0, 0.0, 0.0),
 		        new Vector3d(0, 1, 0));
 		t3d.invert();
 		tg.setTransform(t3d);
@@ -146,21 +147,27 @@ public class MainViewIn3D extends MainView implements IMainView {
 
 	private void addBall(Ball ball) {
 		Appearance ballAppearance = new Appearance();
-		Material blueMat = new Material(blue, black, blue, specular, 25.0f);
+
+		Color3f ballColor = ball.getColor().getColor3f();
+
+		Material blueMat = new Material(black, ballColor, black, specular, 128.0f);
 		ballAppearance.setMaterial(blueMat);
 
 		Sphere sphere = new Sphere(0.5f, 1, 50, ballAppearance);
+		sphere.setCapability(Sphere.ENABLE_APPEARANCE_MODIFY);
 
-		BranchGroup stupid = new BranchGroup();
+		BranchGroup bBG = new BranchGroup();
 		Transform3D t3d = new Transform3D();
-		t3d.set(new Vector3f(0, 0, 0));
+		t3d.set(new Vector3f(ball.getPositionX(), ball.getPositionY(), ball
+		        .getPositionZ()));
 		TransformGroup tg = new TransformGroup(t3d);
+		tg.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 		tg.addChild(sphere);
-		stupid.addChild(tg);
+		bBG.addChild(tg);
 
-		ballBranchGroup.addChild(stupid);
+		allBallsBG.addChild(bBG);
 
-		allBalls.put(ball.getId(), ball);
+		allBalls.add(ball.getId());
 		ballGraphs.put(ball.getId(), tg);
 	}
 
@@ -178,15 +185,36 @@ public class MainViewIn3D extends MainView implements IMainView {
 	public void setBallPositions(Ball[] ballData) {
 		if (ballData != null) {
 			for (Ball ball : ballData) {
-				if (!allBalls.values().contains(ball)) {
+				if (!allBalls.contains(ball.getId())) {
 					addBall(ball);
 				} else {
-					moveBall(ball);
+					updateBall(ball);
 				}
+			}
+
+			List<String> slatedForDeletion = new ArrayList<String>();
+			for (String ballId : allBalls) {
+				for (Ball ball : ballData) {
+					if (!allBalls.contains(ball.getId())) {
+						slatedForDeletion.add(ballId);
+					}
+				}
+			}
+
+			for (String ballId : slatedForDeletion) {
+				allBalls.remove(ballId);
+				ballGraphs.remove(ballId);
 			}
 		}
 	}
 
-	private void moveBall(Ball ball) {
+	private void updateBall(Ball ball) {
+		TransformGroup tg = ballGraphs.get(ball.getId());
+		Transform3D t3d = new Transform3D();
+		tg.getTransform(t3d);
+
+		t3d.set(new Vector3f(ball.getPositionX(), ball.getPositionY(), ball
+		        .getPositionZ()));
+		tg.setTransform(t3d);
 	}
 }

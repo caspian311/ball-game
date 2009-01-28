@@ -1,12 +1,12 @@
 package net.todd.games.balls.client.ui;
 
-import java.awt.Color;
 import java.util.UUID;
 
 import net.todd.common.uitools.IListener;
 import net.todd.common.uitools.ListenerManager;
 import net.todd.games.balls.client.INetworkClient;
 import net.todd.games.balls.common.Ball;
+import net.todd.games.balls.common.BallColor;
 
 public class MainModel implements IMainModel {
 	private final ISystemKiller systemKiller;
@@ -36,9 +36,7 @@ public class MainModel implements IMainModel {
 	private void createDefaultBall() {
 		myBall = new Ball();
 		myBall.setId(UUID.randomUUID().toString());
-		myBall.setColorRed(255);
-		myBall.setColorGreen(255);
-		myBall.setColorBlue(255);
+		myBall.setColor(BallColor.White);
 	}
 
 	public void doClose() {
@@ -70,49 +68,17 @@ public class MainModel implements IMainModel {
 	}
 
 	public void moveBallLeft() {
-		myBall.setPositionX(myBall.getPositionX() - 1);
-		networkClient.update(myBall);
-	}
-
-	public void moveBallRight() {
 		myBall.setPositionX(myBall.getPositionX() + 1);
 		networkClient.update(myBall);
 	}
 
+	public void moveBallRight() {
+		myBall.setPositionX(myBall.getPositionX() - 1);
+		networkClient.update(myBall);
+	}
+
 	public void updateColor(String updatedColor) {
-		if ("White".equals(updatedColor)) {
-			myBall.setColorRed(Color.white.getRed());
-			myBall.setColorGreen(Color.white.getGreen());
-			myBall.setColorBlue(Color.white.getBlue());
-		} else if ("Red".equals(updatedColor)) {
-			myBall.setColorRed(Color.red.getRed());
-			myBall.setColorGreen(Color.red.getGreen());
-			myBall.setColorBlue(Color.red.getBlue());
-		} else if ("Orange".equals(updatedColor)) {
-			myBall.setColorRed(Color.orange.getRed());
-			myBall.setColorGreen(Color.orange.getGreen());
-			myBall.setColorBlue(Color.orange.getBlue());
-		} else if ("Yellow".equals(updatedColor)) {
-			myBall.setColorRed(Color.yellow.getRed());
-			myBall.setColorGreen(Color.yellow.getGreen());
-			myBall.setColorBlue(Color.yellow.getBlue());
-		} else if ("Green".equals(updatedColor)) {
-			myBall.setColorRed(Color.green.getRed());
-			myBall.setColorGreen(Color.green.getGreen());
-			myBall.setColorBlue(Color.green.getBlue());
-		} else if ("Blue".equals(updatedColor)) {
-			myBall.setColorRed(Color.blue.getRed());
-			myBall.setColorGreen(Color.blue.getGreen());
-			myBall.setColorBlue(Color.blue.getBlue());
-		} else if ("Purple".equals(updatedColor)) {
-			myBall.setColorRed(125);
-			myBall.setColorGreen(0);
-			myBall.setColorBlue(125);
-		} else if ("Black".equals(updatedColor)) {
-			myBall.setColorRed(Color.black.getRed());
-			myBall.setColorGreen(Color.black.getGreen());
-			myBall.setColorBlue(Color.black.getBlue());
-		}
+		myBall.setColor(BallColor.byName(updatedColor));
 		networkClient.update(myBall);
 	}
 }

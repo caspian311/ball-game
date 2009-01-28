@@ -1,6 +1,5 @@
 package net.todd.games.balls.client.ui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -25,8 +24,7 @@ public class BouncyBallComponent extends Component {
 
 	private void drawBalls(Graphics g) {
 		for (Ball ball : getBallData()) {
-			g.setColor(new Color(ball.getColorRed(), ball.getColorGreen(), ball
-			        .getColorBlue()));
+			g.setColor(ball.getColor().getColor());
 
 			Point point = coordinateConverter.toXY(ball.getPositionX(), ball
 			        .getPositionY(), ball.getPositionZ());

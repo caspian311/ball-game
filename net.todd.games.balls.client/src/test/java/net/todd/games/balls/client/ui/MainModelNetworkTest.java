@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +51,7 @@ public class MainModelNetworkTest {
 		assertNull(networkClient.ballReceived);
 		new MainModel(null, networkClient);
 		assertNotNull(networkClient.ballReceived);
-		assertEquals(255, networkClient.ballReceived.getColorBlue());
-		assertEquals(255, networkClient.ballReceived.getColorRed());
-		assertEquals(255, networkClient.ballReceived.getColorGreen());
+		assertEquals(Color.white, networkClient.ballReceived.getColor().getColor());
 		assertEquals(0.0f, networkClient.ballReceived.getPositionX());
 		assertEquals(0.0f, networkClient.ballReceived.getPositionY());
 		assertEquals(0.0f, networkClient.ballReceived.getPositionZ());
