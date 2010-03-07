@@ -31,11 +31,12 @@ public class BallClientHasListenersTest {
 
 	@Before
 	public void setUp() throws Exception {
-		acceptor = new NioSocketAcceptor(Runtime.getRuntime().availableProcessors());
+		acceptor = new NioSocketAcceptor(Runtime.getRuntime()
+				.availableProcessors());
 
 		acceptor.getFilterChain().addFirst("logger", new LoggingFilter());
 		acceptor.getFilterChain().addLast("codec",
-		        new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
+				new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
 
 		acceptor.setHandler(new IoHandlerAdapter() {
 		});
@@ -50,7 +51,8 @@ public class BallClientHasListenersTest {
 
 	@Test
 	@Ignore
-	public void testClientNotifiesListenersWhenMessageComesIn() throws Exception {
+	public void testClientNotifiesListenersWhenMessageComesIn()
+			throws Exception {
 		BallClient client = new BallClient();
 		Thread.sleep(100);
 
@@ -75,7 +77,8 @@ public class BallClientHasListenersTest {
 
 	@Test
 	@Ignore
-	public void testGettingClientBallsGetsAllBallsGivenFromServer() throws Exception {
+	public void testGettingClientBallsGetsAllBallsGivenFromServer()
+			throws Exception {
 		BallClient client = new BallClient();
 		Thread.sleep(100);
 
@@ -121,9 +124,8 @@ public class BallClientHasListenersTest {
 	private Ball[] ballsFromClient = null;
 
 	@Test
-	@Ignore
 	public void testNotifyListenersIsCalledAfterBallsRetreivedFromServerMessage()
-	        throws Exception {
+			throws Exception {
 		final BallClient client = new BallClient();
 		client.addListener(new IListener() {
 			public void fireEvent() {
